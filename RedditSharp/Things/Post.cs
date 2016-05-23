@@ -298,7 +298,11 @@ namespace RedditSharp.Things
         }
         public void Update()
         {
-            JToken post = Reddit.GetToken(this.Url);
+            JToken post;
+            if (!this.IsSelfPost)
+                post = Reddit.GetToken(new Uri("https://reddit.com" + this.Permalink));
+            else
+                post = Reddit.GetToken(this.Url);
             JsonConvert.PopulateObject(post["data"].ToString(), this, Reddit.JsonSerializerSettings);
         }
 
